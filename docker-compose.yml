@@ -1,0 +1,41 @@
+services:
+  test-runner:
+    build: .
+    container_name: test-runner
+    depends_on:
+      test-opensearch-cluster:
+        condition: service_healthy
+    networks:
+      - test
+
+  test-opensearch-cluster:
+      image: opensearchproject/opensearch:latest
+      container_name: test-opensearch-cluster
+      environment:
+        - OS_HOST=test-opensearch-cluster
+        - OS_PORT=9200
+        - discovery.type=single-node
+        - DISABLE_SECURITY_PLUGIN=true
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+      ports:
+        - "9200:9200"
+      volumes:
+        - os_data:/usr/share/opensearch/data
+      networks:
+        - test
+      healthcheck:
+        test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]
+        interval: 10s
+        timeout: 2s
+        retries: 10
+
+volumes:
+  os_data:
+    driver: local
+
+networks:
+  test:
+    external: true
