@@ -25,10 +25,10 @@ def test_successfully_deleting_an_index_013(
     assert not test_os_client.indices.exists(index=test_index_name)
 
 
-def test_unsuccessfully_modifying_an_index_due_to_non_existent_cluster_014(
+def test_unsuccessfully_deleting_an_index_due_to_non_existent_cluster_014(
     invalid_test_os_client: OpenSearch,
     test_index_name: str,
 ) -> None:
     # Exec/Assert
     with pytest.raises(TransportError):
-        assert not invalid_test_os_client.indices.exists(index=test_index_name)
+        assert not invalid_test_os_client.indices.delete(index=test_index_name)
