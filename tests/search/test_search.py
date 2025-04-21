@@ -165,6 +165,7 @@ def test_geo_query_returns_results_044(
 
     # Assert
     assert len(search_results) == 1
+    assert search_results[0]["_source"]["name"] == "Alice"
 
 
 def test_general_match_all_query_returns_results_045(
