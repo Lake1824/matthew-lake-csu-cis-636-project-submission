@@ -105,7 +105,7 @@ def test_unsuccessfully_creating_an_index_due_to_non_existent_cluster_007(
     # Setup
     index_settings: dict = {
         "settings": {
-            "index.number_of_shards": 1,
+            "index.number_of_shards": 2,
             "index.number_of_replicas": 2,
             "index.refresh_interval": "1s",
         }
